@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @ToString
 
 @Entity
@@ -27,6 +28,8 @@ public class Book {
     private String description;
 
 
+
+
     public Book(String title, int maxLoanDays, BigDecimal finePerDay, String description) {
         this.title = title;
         this.maxLoanDays = maxLoanDays;
@@ -34,16 +37,4 @@ public class Book {
         this.description = description;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Book book = (Book) o;
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

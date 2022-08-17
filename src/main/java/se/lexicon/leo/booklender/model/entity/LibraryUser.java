@@ -24,6 +24,7 @@ public class LibraryUser
 
     private String name;
 
+    @Column(unique = true)
     private String email;
 
     public LibraryUser(LocalDate regDate, String name, String email)

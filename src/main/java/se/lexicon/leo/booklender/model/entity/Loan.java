@@ -5,8 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Getter
-@Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -32,6 +31,46 @@ public class Loan {
         this.loanTaker = loanTaker;
         this.book = book;
         this.loanDate = loanDate;
+        this.concluded = concluded;
+    }
+
+    public long getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(long loanId) {
+        this.loanId = loanId;
+    }
+
+    public LibraryUser getLoanTaker() {
+        return loanTaker;
+    }
+
+    public void setLoanTaker(LibraryUser loanTaker) {
+        this.loanTaker = loanTaker;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public LocalDate getLoanDate() {
+        return loanDate;
+    }
+
+    public void setLoanDate(LocalDate loanDate) {
+        this.loanDate = loanDate;
+    }
+
+    public boolean isConcluded() {
+        return concluded;
+    }
+
+    public void setConcluded(boolean concluded) {
         this.concluded = concluded;
     }
 }
