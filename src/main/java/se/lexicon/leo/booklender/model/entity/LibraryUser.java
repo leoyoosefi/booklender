@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 
 @Entity
-@Table(name = "library_user")
+@Table(name = "libraryUsers")
 public class LibraryUser
 {
     @Id
