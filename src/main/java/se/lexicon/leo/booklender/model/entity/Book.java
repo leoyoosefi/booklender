@@ -5,7 +5,6 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Objects;
 
 @Setter
 @Getter
@@ -26,6 +25,14 @@ public class Book {
     private int maxLoanDays;
     private BigDecimal finePerDay;
     private String description;
+
+
+    public Book(String title, int maxLoanDays, BigDecimal finePerDay, String description) {
+        this.title = title;
+        this.maxLoanDays = maxLoanDays;
+        this.finePerDay = finePerDay;
+        this.description = description;
+    }
 
     @Override
     public boolean equals(Object o) {
