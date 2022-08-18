@@ -5,20 +5,16 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
 @EqualsAndHashCode
 
 @Entity
-@Table(name = "libraryUsers")
+@Table(name = "library_users")
 public class LibraryUser
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int userId;
 
     private LocalDate regDate;
 
@@ -31,6 +27,40 @@ public class LibraryUser
     {
         this.regDate = regDate;
         this.name = name;
+        this.email = email;
+    }
+
+    public LibraryUser() {
+
+    }
+
+    public Integer getUserId()
+    {
+        return userId;
+    }
+
+    public LocalDate getRegDate()
+    {
+        return regDate;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail(String email)
+    {
         this.email = email;
     }
 }
