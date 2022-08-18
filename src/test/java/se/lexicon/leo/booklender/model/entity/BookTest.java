@@ -13,15 +13,15 @@ public class BookTest
     @BeforeAll
     void setup()
     {
-        testObject = new Book("Book", 7, new BigDecimal(7), "TEST TEST TEST");
+        testObject = new Book("BookTest", 10, new BigDecimal(10), "TEST TEST TEST");
     }
 
     @Test
     @Order(1)
     void GetTotalAdditionalDays()
     {
-        int expected = 7;
-        testObject.setAdditionalLoanDays(7);
+        int expected = 20;
+        testObject.setAdditionalLoanDays(10);
 
         Assertions.assertEquals(testObject.getTotalLoanDays(), expected);
     }
