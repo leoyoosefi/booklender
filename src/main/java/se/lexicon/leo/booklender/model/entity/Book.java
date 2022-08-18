@@ -23,7 +23,7 @@ public class Book
 
     private int maxLoanDays;
 
-    private int additionalLoanDays = 0;
+    private int additionalLoanDays;
 
     private BigDecimal finePerDay;
 
