@@ -20,11 +20,11 @@ public class Loan
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long loanId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "loan_taker_id")
     private LibraryUser loanTaker;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "book_book_id")
     private Book book;
 
