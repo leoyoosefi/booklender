@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 @ToString
 @EqualsAndHashCode
+@AllArgsConstructor
 
 @Entity
 @Table(name = "library_users")
@@ -23,19 +24,12 @@ public class LibraryUser
     @Column(unique = true)
     private String email;
 
-    public LibraryUser(LocalDate regDate, String name, String email)
-    {
+    public LibraryUser(LocalDate regDate, String name) {
         this.regDate = regDate;
-        this.name = name;
-        this.email = email;
+        setName(name);
+
     }
 
-    public LibraryUser(int userId, LocalDate regDate, String name, String email) {
-        this.userId = userId;
-        this.regDate = regDate;
-        this.name = name;
-        this.email = email;
-    }
 
     public LibraryUser() {
 
