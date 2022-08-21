@@ -9,6 +9,10 @@ import java.time.Period;
 
 
 
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode
 @ToString
 
@@ -20,85 +24,53 @@ public class Loan
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long loanId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "loan_taker_id")
-    private LibraryUser loanTaker;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    private LibraryUser loanTaker; // changed cascade from cascade.all to the correct fetch options
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "book_book_id")
-    private Book book;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    private Book book; // changed cascade from cascade.all to the correct fetch options
 
     LocalDate loanDate;
 
-    boolean concluded;
+    @Column(name = "concluded")
+    boolean terminated; //added new column name instead of terminated
 
-    public Loan() {
+    public Loan(LibraryUser loanTaker, Book book, LocalDate loanDate) {
+        setLoanTaker(loanTaker);
+        setBook(book);
+        setLoanDate(loanDate);
+        setTerminated(false);  //applied chain constructor for set
     }
 
-    public Loan(LibraryUser loanTaker, Book book, LocalDate loanDate, boolean concluded)
-    {
-        this.loanTaker = loanTaker;
-        this.book = book;
-        this.loanDate = loanDate;
-        this.concluded = concluded;
+    public boolean isOverDue() {
+        LocalDate dueDate = loanDate.plusDays(book.getMaxLoanDays());
+        return LocalDate.now().isAfter(dueDate);
     }
 
-    public long getLoanId()
-    {
-        return loanId;
+    public BigDecimal getFine() {
+        Period period = Period.between(loanDate.plusDays(book.getMaxLoanDays()), LocalDate.now());
+        int daysOverdue = period.getDays();
+        BigDecimal fine = BigDecimal.ZERO;
+        if (daysOverdue > 0)
+            fine = BigDecimal.valueOf(daysOverdue * book.getFinePerDay().longValue());
+        return fine;
     }
 
-    public LibraryUser getLoanTaker()
-    {
-        return loanTaker;
-    }
+    public boolean extendLoan(int days) {
+        if (book.isReserved() || isOverDue()) return false;
+        if (days > book.getMaxLoanDays()) return false;
 
-    public void setLoanTaker(LibraryUser loanTaker)
-    {
-        this.loanTaker = loanTaker;
-    }
-
-    public Book getBook()
-    {
-        return book;
-    }
-
-    public void setBook(Book book)
-    {
-        this.book = book;
-    }
-
-    public boolean isOverdue()
-    {
-        return LocalDate.now().isAfter(getLoanDate().plusDays(book.getTotalLoanDays()));
-    }
-
-    public BigDecimal getFine()
-    {
-        return isOverdue() ? book.getFinePerDay().multiply(new BigDecimal(Period.between(getLoanDate(), LocalDate.now()).getDays())) : new BigDecimal(0);
-    }
-
-    public LocalDate getLoanDate()
-    {
-        return loanDate;
-    }
-
-    public boolean isConcluded()
-    {
-        return concluded;
-    }
-
-    public void setConcluded(boolean concluded)
-    {
-        this.concluded = concluded;
-    }
-
-    boolean extendLoan(int days)
-    {
-        if(book.isReserved() || days <= book.getAdditionalLoanDays())
-            return false;
-
-        book.setAdditionalLoanDays(days);
+        setLoanDate(getLoanDate().plusDays(days));
         return true;
     }
+
+    public void returnBook() {
+        this.book.setAvailable(true);
+        this.terminated = true;
+    }
+
+
+
+
+
 }
