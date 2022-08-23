@@ -1,26 +1,29 @@
 package se.lexicon.leo.booklender.model.entity;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 
+@SpringBootTest
 public class LibraryUserTest {
 
     @Test
-    public void test_create_LibraryUser_SUCCESS() {
-        //arranged
-        LocalDate expectedRegDate = LocalDate.parse("2022-08-21");
-        String expectedName = "Test Testsson";
-
-        //testing act
-        LibraryUser testUser = new LibraryUser(LocalDate.parse("2022-08-21"), "Test test");
-
-
-        //applied assertions
-        assertEquals(expectedRegDate, testUser.getRegDate());
-        assertEquals(expectedName, testUser.getName());
+    void createEmptyLibraryUser() {
+        LibraryUser user = new LibraryUser();
+        Assertions.assertNotNull(user);
     }
 
+    @Test
+    void createUserAllArgsWithoutId() {
+        LibraryUser user = new LibraryUser(LocalDate.parse("1991-12-02"), "Leo", "leo@email.com");
+        String expected = "leo@email.com";
+        Assertions.assertEquals(expected, user.getEmail());
+        Assertions.assertEquals(LocalDate.parse("1991-12-02"), user.getRegDate());
+        expected = "Leo";
+        Assertions.assertEquals(expected, user.getName());
+
+    }
 }

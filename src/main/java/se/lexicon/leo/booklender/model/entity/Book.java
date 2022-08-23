@@ -1,127 +1,115 @@
 package se.lexicon.leo.booklender.model.entity;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-
 @Entity
-@Table(name = "books")
-public class Book
-{
+public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int bookId;
-
+    @Column(nullable = false, unique = true)
+    int bookId;
+    @Column(nullable = false)
     private String title;
-
-    private boolean available = true;
-
-    private boolean reserved = false;
-
+    @Column(nullable = false)
+    boolean available;
+    @Column(nullable = false)
+    boolean reserved = false;
+    @Column(nullable = false)
     private int maxLoanDays;
-
-    private int additionalLoanDays;
-
+    @Column(nullable = false)
     private BigDecimal finePerDay;
-
+    @Column(nullable = false)
     private String description;
 
-
     public Book() {
+        setAvailable(true);
+        setMaxLoanDays(20);
+        setReserved(false);
     }
 
     public Book(String title, int maxLoanDays, BigDecimal finePerDay, String description) {
+        this();
         setTitle(title);
         setMaxLoanDays(maxLoanDays);
         setFinePerDay(finePerDay);
         setDescription(description);
-        setAvailable(true);
-        setReserved(false);
     }
 
-    public int getBookId()
-    {
+    public Book(String title, boolean available, boolean reserved, int maxLoanDays, BigDecimal finePerDay, String description) {
+        this();
+        setTitle(title);
+        setAvailable(available);
+        setReserved(reserved);
+        setMaxLoanDays(maxLoanDays);
+        setFinePerDay(finePerDay);
+        setDescription(description);
+    }
+
+    public int getBookId() {
         return bookId;
     }
 
-    public String getTitle()
-    {
+    public void setBookId(int bookId) {
+        if (bookId < 0) throw new IllegalArgumentException("bookId is not valid");
+        this.bookId = bookId;
+    }
+
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
+        if (title == null || title.equals("")) throw new IllegalArgumentException("title is null or empty");
         this.title = title;
     }
 
-    public boolean isAvailable()
-    {
+    public boolean isAvailable() {
         return available;
     }
 
-    public void setAvailable(boolean available)
-    {
+    public void setAvailable(boolean available) {
         this.available = available;
     }
 
-    public boolean isReserved()
-    {
+    public boolean isReserved() {
         return reserved;
     }
 
-    public void setReserved(boolean reservedStatus)
-    {
-        this.reserved = reservedStatus;
+    public void setReserved(boolean reserved) {
+        this.reserved = reserved;
     }
 
-    public int getMaxLoanDays()
-    {
+    public int getMaxLoanDays() {
         return maxLoanDays;
     }
 
-    public void setMaxLoanDays(int maxLoanDays)
-    {
+    public void setMaxLoanDays(int maxLoanDays) {
+        if (maxLoanDays < 0) throw new IllegalArgumentException("maxLoanDats must be zero or more");
         this.maxLoanDays = maxLoanDays;
     }
 
-    public int getAdditionalLoanDays()
-    {
-        return additionalLoanDays;
-    }
-
-    public void setAdditionalLoanDays(int additionalLoanDays)
-    {
-        this.additionalLoanDays = additionalLoanDays;
-    }
-
-    public int getTotalLoanDays()
-    {
-        return maxLoanDays + additionalLoanDays;
-    }
-
-    public BigDecimal getFinePerDay()
-    {
+    public BigDecimal getFinePerDay() {
         return finePerDay;
     }
 
-    public void setFinePerDay(BigDecimal finePerDay)
-    {
+    public void setFinePerDay(BigDecimal finePerDay) {
+        if (finePerDay.compareTo(BigDecimal.ZERO) <= 0)
+            throw new IllegalArgumentException("finePerDay must be zero or more");
         this.finePerDay = finePerDay;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
+        if (description == null || description.equals(""))
+            throw new IllegalArgumentException("description is null or empty");
+
         this.description = description;
     }
-
 }
