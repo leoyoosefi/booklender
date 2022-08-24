@@ -109,4 +109,3 @@ class LibraryUserTest {
         assertThrows(IllegalArgumentException.class, () -> (new LibraryUser()).setEmail(null));
     }
 }
-
