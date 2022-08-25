@@ -8,6 +8,8 @@ import java.util.List;
 public interface BookRepository extends CrudRepository<Book, Integer> {
 
 
+    List<Book> findAll();
+
     List<Book> findByReserved(boolean reserved);
 
     List<Book> findByAvailable(boolean available);
