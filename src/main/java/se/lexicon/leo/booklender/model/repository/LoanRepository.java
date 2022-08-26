@@ -6,7 +6,7 @@ import se.lexicon.leo.booklender.model.entity.Loan;
 import java.util.List;
 
 
-public interface LoanRepository extends CrudRepository<Loan, Integer> {
+public interface LoanRepository extends CrudRepository<Loan, Long> {
 
 
     List<Loan> findAll();
