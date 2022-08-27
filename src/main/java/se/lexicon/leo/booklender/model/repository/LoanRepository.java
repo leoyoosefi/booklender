@@ -11,10 +11,11 @@ public interface LoanRepository extends CrudRepository<Loan, Long> {
 
     List<Loan> findAll();
 
+    Loan findById(long id);
+
     List<Loan> findAllByLoanTakerId(int id);
 
     List<Loan> findByConcluded(boolean concluded);
 
     List<Loan> findByBookBookId(int id);
-
 }
