@@ -15,6 +15,13 @@ public class LibraryUserDto {
     private String name;
     private String email;
 
+    public LibraryUserDto(LocalDate regDate, String name, String email) {
+
+        setRegDate(regDate);
+        setName(name);
+        setEmail(email);
+    }
+
     public LibraryUserDto(int id, LocalDate regDate, String name, String email) {
         setId(id);
         setRegDate(regDate);

@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import se.lexicon.leo.booklender.exception.ObjectNotFoundException;
 import se.lexicon.leo.booklender.model.dto.BookDto;
 import se.lexicon.leo.booklender.model.entity.Book;
@@ -15,8 +16,8 @@ import java.util.Optional;
 @Service
 public class BookServiceImpl implements BookService {
 
-    private BookRepository bookRepository;
-    private ModelMapper modelMapper;
+    private final BookRepository bookRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public BookServiceImpl(BookRepository bookRepository, ModelMapper modelMapper) {
@@ -76,11 +77,15 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto update(BookDto bookDto) {
-        if (bookDto == null) throw new IllegalArgumentException("bookDto wis null");
-        Book updated = bookRepository.save(modelMapper.map(bookDto, Book.class));
-
-        return modelMapper.map(updated, BookDto.class);
+    @Transactional(rollbackFor = Exception.class)
+    public BookDto update(BookDto bookDto) throws ObjectNotFoundException {
+        if (bookDto == null) throw new IllegalArgumentException("bookDto is null");
+        if(bookDto.getBookId()==null) throw new IllegalArgumentException("BookId should not be null");
+        if(!bookRepository.existsById(bookDto.getBookId()))
+            throw new ObjectNotFoundException("this book does not exist");
+        Book updatedBook = bookRepository.save(modelMapper.map(bookDto, Book.class));
+        System.out.println("updated book:" + updatedBook);
+        return modelMapper.map(updatedBook, BookDto.class);
     }
 
     @Override

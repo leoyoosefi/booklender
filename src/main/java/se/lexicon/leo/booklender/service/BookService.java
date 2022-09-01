@@ -18,7 +18,7 @@ public interface BookService {
 
     BookDto create(BookDto bookDto);
 
-    BookDto update(BookDto bookDto);
+    BookDto update(BookDto bookDto) throws ObjectNotFoundException;
 
     boolean deleteById(int bookId) throws ObjectNotFoundException;
 }
