@@ -29,22 +29,28 @@ public class LibraryUserController {
     }
 
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<LibraryUserDto> findByEmail(@PathVariable("email") String email) throws ObjectNotFoundException {
 
-    @GetMapping
+            LibraryUserDto libraryUserDto = libraryUserService.findByEmail(email);
+            return ResponseEntity.ok().body(libraryUserDto);
+    }
+
+
+
+    @GetMapping("/all")
     public ResponseEntity<List<LibraryUserDto>> getAll() {
         return ResponseEntity.ok().body(libraryUserService.findAll());
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<LibraryUserDto> create(@RequestBody @Valid LibraryUserDto libraryUserDto){
-        System.out.println("libraryUserDto = " + libraryUserDto);
         LibraryUserDto createdUser = libraryUserService.create(libraryUserDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    @PutMapping("/")
+    @PutMapping()
     public ResponseEntity<LibraryUserDto> update(@RequestBody @Valid LibraryUserDto libraryUserDto) throws ObjectNotFoundException {
-        System.out.println("libraryUserDto = " + libraryUserDto);
         libraryUserService.update(libraryUserDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
